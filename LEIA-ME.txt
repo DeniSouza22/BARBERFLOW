@@ -1,0 +1,15 @@
+PASTA DE IMAGENS — BarberFlow
+
+index.html:
+  - barbearia.jpg         Foto da fachada ou interior da barbearia 
+
+servicos.html:
+  - corte-social.jpg   Foto de um corte social 
+  - corte-degrade.jpg   Foto de um corte degradê 
+  - barba-completa.jpg   Foto de uma barba modelada 
+
+barbeiros.html:
+  - barbeiro-marco.jpg  Foto do barbeiro Marco 
+  - barbeiro-lucas.jpg   Foto do barbeiro Lucas 
+  - barbeiro-rafael.jpg  Foto do barbeiro Rafael 
+  - barbeiro-andre.jpg   Foto do barbeiro André 
