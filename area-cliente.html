@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Área — BarberFlow</title>
+  <link rel="stylesheet" href="CSS/global.css">
+  <style>
+    
+    .abas {
+      display: flex;
+      gap: .4rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #2a2a2a;
+      padding-bottom: .6rem;
+    }
+    .aba-btn {
+      background: transparent;
+      border: 1px solid #444;
+      color: #aaa;
+      font-size: .88rem;
+      padding: .5rem 1.2rem;
+      letter-spacing: .5px;
+      transition: background .2s, color .2s;
+    }
+    .aba-btn:hover, .aba-btn.ativa {
+      background: var(--ouro);
+      color: var(--preto);
+      border-color: var(--ouro);
+      transform: none;
+    }
+    .painel { display: none; }
+    .painel.ativo { display: block; }
+
+    .boas-vindas {
+      background: var(--carvao);
+      border-left: 4px solid var(--ouro);
+      padding: 1rem 1.4rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 2rem;
+    }
+    .boas-vindas strong { color: var(--ouro); font-size: 1.05rem; }
+
+    .card-agend {
+      background: var(--carvao);
+      border: 1px solid #333;
+      border-radius: var(--radius);
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .card-agend .info p { margin-bottom: .2rem; font-size: .9rem; }
+    .badge {
+      display: inline-block;
+      padding: .2rem .65rem;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .badge-confirmado { background: #1a3028; color: #8edbb4; }
+    .badge-cancelado  { background: #3a1c1c; color: #f5a0a0; }
+    .badge-pendente   { background: #2e2a18; color: #e0c87a; }
+
+    #area-nota {
+      background: var(--grafite);
+      border: 1px solid #444;
+      border-radius: var(--radius);
+      padding: .8rem 1rem;
+      color: var(--creme);
+      font-size: .95rem;
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    #area-nota:focus { outline: none; border-color: var(--ouro); }
+
+    .campo-perfil { margin-bottom: 1rem; }
+    .campo-perfil label { font-size: .85rem; color: #aaa; margin-bottom: .25rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>✂ BarberFlow</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">🏠 Início</a></li>
+        <li><a href="servicos.html">✂ Serviços</a></li>
+        <li><a href="barbeiros.html">👤 Barbeiros</a></li>
+        <li><a href="cadastro.html">📝 Agendar</a></li>
+        <li><a href="#" id="link-sair">🚪 Sair</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="boas-vindas">
+      <strong id="saudacao">Olá!</strong>
+      <span id="subtitulo"> Aqui está sua área pessoal na BarberFlow.</span>
+    </div>
+
+    <div class="abas">
+      <button class="aba-btn ativa" data-aba="agendamentos">📅 Meus Agendamentos</button>
+      <button class="aba-btn"      data-aba="notas">📝 Minhas Notas</button>
+      <button class="aba-btn"      data-aba="perfil">👤 Meu Perfil</button>
+    </div>
+
+    <section id="painel-agendamentos" class="painel ativo">
+      <h2>📅 Meus Agendamentos</h2>
+      <p>Veja e gerencie seus horários marcados.</p>
+
+      <div id="msg-agend" class="alerta" style="display:none"></div>
+
+      <div id="lista-agendamentos">
+        <p style="color:var(--cinza-txt)">Carregando…</p>
+      </div>
+
+      <hr>
+      <p>
+        <a href="cadastro.html" class="btn">+ Novo Agendamento</a>
+      </p>
+    </section>
+
+    <section id="painel-notas" class="painel">
+      <h2>📝 Minhas Notas</h2>
+      <p>
+        Use este espaço para registrar preferências, observações ou lembretes
+        para o seu barbeiro — por exemplo: comprimento preferido, estilo de
+        barba, alergias a produtos, etc.
+      </p>
+
+      <div id="msg-nota" class="alerta" style="display:none"></div>
+
+      <textarea id="area-nota" placeholder="Digite suas preferências aqui…"></textarea>
+
+      <p style="margin-top:.8rem">
+        <button id="btn-salvar-nota" class="btn">💾 Salvar Notas</button>
+      </p>
+
+      <p><small>Última atualização: <span id="data-nota">—</span></small></p>
+    </section>
+
+    <section id="painel-perfil" class="painel">
+      <h2>👤 Meu Perfil</h2>
+      <p>Atualize seus dados cadastrais.</p>
+
+      <div id="msg-perfil" class="alerta" style="display:none"></div>
+
+      <form id="form-perfil" novalidate>
+        <fieldset>
+          <legend><strong>Dados Pessoais</strong></legend>
+
+          <div class="campo-perfil">
+            <label for="p-nome">Nome completo</label>
+            <input type="text" id="p-nome" name="nome" maxlength="100">
+          </div>
+
+          <div class="campo-perfil">
+            <label for="p-email">E-mail</label>
+            <input type="email" id="p-email" name="email" readonly
+                   style="opacity:.6;cursor:not-allowed">
+            <small>O e-mail não pode ser alterado.</small>
+          </div>
+
+          <div class="campo-perfil">
+            <label for="p-telefone">Telefone / WhatsApp</label>
+            <input type="tel" id="p-telefone" name="telefone"
+                   placeholder="(81) 9 9999-9999">
+          </div>
+
+          <div class="campo-perfil">
+            <label for="p-cpf">CPF</label>
+            <input type="text" id="p-cpf" name="cpf"
+                   placeholder="000.000.000-00" maxlength="14">
+          </div>
+
+          <div class="campo-perfil">
+            <label for="p-nascimento">Data de nascimento</label>
+            <input type="date" id="p-nascimento" name="nascimento"
+                   min="1920-01-01" max="2015-12-31">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><strong>Alterar Senha</strong></legend>
+
+          <div class="campo-perfil">
+            <label for="p-senha-atual">Senha atual</label>
+            <input type="password" id="p-senha-atual" name="senhaAtual"
+                   placeholder="Deixe em branco para não alterar">
+          </div>
+
+          <div class="campo-perfil">
+            <label for="p-senha-nova">Nova senha</label>
+            <input type="password" id="p-senha-nova" name="senhaNova"
+                   placeholder="Mínimo 6 caracteres">
+          </div>
+        </fieldset>
+
+        <input type="submit" value="💾 Salvar Alterações">
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>BarberFlow</strong><br>
+    &copy; 2026 Barbearia · Recife, PE · Todos os direitos reservados</p>
+    <nav><ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="servicos.html">Serviços</a></li>
+      <li><a href="barbeiros.html">Barbeiros</a></li>
+      <li><a href="cadastro.html">Agendar</a></li>
+    </ul></nav>
+  </footer>
+
+  <script src="JS/db.js"></script>
+  <script>
+    const sessao = DB.usuarioLogado();
+    if (!sessao) { window.location.href = "login.html"; }
+
+    const usuario = DB.getUsuarioById(sessao.id);
+
+    document.getElementById("saudacao").textContent =
+      `✂ Olá, ${usuario.nome.split(" ")[0]}!`;
+
+    document.getElementById("link-sair").addEventListener("click", function(e) {
+      e.preventDefault();
+      DB.logout();
+      window.location.href = "login.html";
+    });
+
+    document.querySelectorAll(".aba-btn").forEach(btn => {
+      btn.addEventListener("click", function() {
+        document.querySelectorAll(".aba-btn").forEach(b => b.classList.remove("ativa"));
+        document.querySelectorAll(".painel").forEach(p => p.classList.remove("ativo"));
+        this.classList.add("ativa");
+        document.getElementById("painel-" + this.dataset.aba).classList.add("ativo");
+      });
+    });
+
+    function renderAgendamentos() {
+      const lista = document.getElementById("lista-agendamentos");
+      const agendamentos = DB.getAgendamentosByUsuario(usuario.id);
+
+      if (!agendamentos.length) {
+        lista.innerHTML = `<p style="color:var(--cinza-txt)">
+          Nenhum agendamento encontrado.
+          <a href="cadastro.html">Agendar agora →</a></p>`;
+        return;
+      }
+
+      lista.innerHTML = agendamentos.map(a => {
+        const badgeClass = a.status === "confirmado" ? "badge-confirmado"
+                         : a.status === "cancelado"  ? "badge-cancelado"
+                         : "badge-pendente";
+        const podeCancel = a.status !== "cancelado";
+        return `
+          <div class="card-agend">
+            <div class="info">
+              <p><strong>${a.servico}</strong>
+                <span class="badge ${badgeClass}">${a.status}</span></p>
+              <p>👤 ${a.barbeiro}</p>
+              <p>📅 ${formatarData(a.data)} às ${a.horario}</p>
+              <p>💳 ${a.pagamento.charAt(0).toUpperCase() + a.pagamento.slice(1)}</p>
+              ${a.observacoes ? `<p><em>"${a.observacoes}"</em></p>` : ""}
+            </div>
+            ${podeCancel ? `
+            <button class="btn btn-perigo" style="font-size:.8rem;padding:.5rem 1rem"
+                    onclick="cancelar(${a.id})">Cancelar</button>` : ""}
+          </div>`;
+      }).join("");
+    }
+
+    function cancelar(id) {
+      if (!confirm("Tem certeza que deseja cancelar este agendamento?")) return;
+      DB.cancelarAgendamento(id);
+      const msgAgend = document.getElementById("msg-agend");
+      msgAgend.className = "alerta alerta-ok";
+      msgAgend.textContent = "Agendamento cancelado.";
+      msgAgend.style.display = "block";
+      renderAgendamentos();
+    }
+
+    function formatarData(str) {
+      const [a, m, d] = str.split("-");
+      return `${d}/${m}/${a}`;
+    }
+
+    renderAgendamentos();
+
+    function carregarNota() {
+      const notas = DB.getNotasByUsuario(usuario.id);
+      if (notas.length) {
+        document.getElementById("area-nota").value = notas[0].texto;
+        document.getElementById("data-nota").textContent = formatarData(notas[0].data);
+      }
+    }
+
+    carregarNota();
+
+    document.getElementById("btn-salvar-nota").addEventListener("click", function() {
+      const texto = document.getElementById("area-nota").value;
+      const nota  = DB.salvarNota(usuario.id, texto);
+      const msgNota = document.getElementById("msg-nota");
+      msgNota.className = "alerta alerta-ok";
+      msgNota.textContent = "Notas salvas com sucesso!";
+      msgNota.style.display = "block";
+      document.getElementById("data-nota").textContent = formatarData(nota.data);
+      setTimeout(() => { msgNota.style.display = "none"; }, 2500);
+    });
+
+    function preencherPerfil() {
+      document.getElementById("p-nome").value      = usuario.nome      || "";
+      document.getElementById("p-email").value     = usuario.email     || "";
+      document.getElementById("p-telefone").value  = usuario.telefone  || "";
+      document.getElementById("p-cpf").value       = usuario.cpf       || "";
+      document.getElementById("p-nascimento").value= usuario.nascimento || "";
+    }
+
+    preencherPerfil();
+
+    document.getElementById("form-perfil").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const msgPerfil = document.getElementById("msg-perfil");
+      msgPerfil.style.display = "none";
+
+      const senhaAtual = document.getElementById("p-senha-atual").value;
+      const senhaNova  = document.getElementById("p-senha-nova").value;
+
+      const campos = {
+        nome:       document.getElementById("p-nome").value.trim(),
+        telefone:   document.getElementById("p-telefone").value.trim(),
+        cpf:        document.getElementById("p-cpf").value.trim(),
+        nascimento: document.getElementById("p-nascimento").value
+      };
+
+      if (senhaAtual || senhaNova) {
+        if (senhaAtual !== usuario.senha) {
+          msgPerfil.className = "alerta alerta-erro";
+          msgPerfil.textContent = "Senha atual incorreta.";
+          msgPerfil.style.display = "block";
+          return;
+        }
+        if (senhaNova.length < 6) {
+          msgPerfil.className = "alerta alerta-erro";
+          msgPerfil.textContent = "A nova senha deve ter pelo menos 6 caracteres.";
+          msgPerfil.style.display = "block";
+          return;
+        }
+        campos.senha = senhaNova;
+        usuario.senha = senhaNova;
+      }
+
+      DB.atualizarUsuario(usuario.id, campos);
+      Object.assign(usuario, campos);
+
+      sessionStorage.setItem("bf_user", JSON.stringify({ id: usuario.id, nome: usuario.nome, email: usuario.email }));
+      document.getElementById("saudacao").textContent = `✂ Olá, ${usuario.nome.split(" ")[0]}!`;
+
+      msgPerfil.className = "alerta alerta-ok";
+      msgPerfil.textContent = "Perfil atualizado com sucesso!";
+      msgPerfil.style.display = "block";
+      document.getElementById("p-senha-atual").value = "";
+      document.getElementById("p-senha-nova").value  = "";
+      setTimeout(() => { msgPerfil.style.display = "none"; }, 2500);
+    });
+  </script>
+
+</body>
+</html>

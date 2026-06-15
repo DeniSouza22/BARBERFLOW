@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — BarberFlow</title>
+  <link rel="stylesheet" href="CSS/global.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+    .caixa-login {
+      background: var(--carvao);
+      border: 1px solid #333;
+      border-top: 3px solid var(--ouro);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--sombra);
+    }
+    .campo { margin-bottom: 1.2rem; }
+    .campo label { display: block; margin-bottom: .4rem; font-size: 0.9rem; color: var(--ouro-claro); }
+    .campo input { width: 100%; padding: 0.8rem; background: var(--grafite); border: 1px solid #444; color: var(--branco); border-radius: var(--radius); }
+    .campo input:focus { border-color: var(--ouro); outline: none; }
+    .btn-block { width: 100%; text-align: center; margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>✂ BarberFlow</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">🏠 Início</a></li>
+        <li><a href="servicos.html">✂ Serviços</a></li>
+        <li><a href="barbeiros.html">👤 Barbeiros</a></li>
+        <li><a href="cadastro.html">📝 Agendar</a></li>
+        <li><a href="login.html" class="ativo" id="link-login">🔐 Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="caixa-login">
+      <h2>🔐 Acessar Conta</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--cinza-txt);">Insira suas credenciais para gerenciar seus agendamentos.</p>
+      
+      <div id="msg-erro" class="alerta alerta-erro" style="display:none; margin-bottom: 1rem;"></div>
+      <div id="msg-ok" class="alerta alerta-ok" style="display:none; margin-bottom: 1rem;"></div>
+
+      <form id="form-login">
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" required placeholder="seuemail@email.com">
+        </div>
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" required placeholder="******">
+        </div>
+        <button type="submit" class="btn btn-block">Entrar no Sistema</button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.88rem;">
+        <span style="color: var(--cinza-txt);">Não possui uma conta?</span> <a href="registro.html" style="font-weight: 600;">Cadastre-se aqui</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p><strong>BarberFlow</strong> &copy; 2026 · Recife, PE</p>
+  </footer>
+
+  <script src="JS/db.js"></script>
+  <script>
+    if (DB.usuarioLogado()) {
+      window.location.href = "area-cliente.html";
+    }
+
+    document.getElementById("form-login").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value;
+      const msgErro = document.getElementById("msg-erro");
+      const msgOk = document.getElementById("msg-ok");
+
+      msgErro.style.display = "none";
+      msgOk.style.display = "none";
+
+      const resultado = DB.login(email, senha);
+      
+      if (!resultado.ok) {
+        msgErro.textContent = resultado.msg;
+        msgErro.style.display = "block";
+        return;
+      }
+
+      sessionStorage.setItem("bf_user", JSON.stringify(resultado.usuario));
+      
+      msgOk.textContent = "Autenticação bem-sucedida! Entrando...";
+      msgOk.style.display = "block";
+      
+      setTimeout(() => {
+        window.location.href = "area-cliente.html";
+      }, 1000);
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const sessao = DB.usuarioLogado();
+      const linkLogin = document.getElementById("link-login");
+
+      if (sessao && linkLogin) {
+        linkLogin.innerHTML = "👤 Minha Área";
+        linkLogin.href = "area-cliente.html";
+        
+        const ul = linkLogin.closest("ul");
+        if (ul && !document.getElementById("btn-logout")) {
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="#" id="btn-logout" style="color: var(--erro);">🚪 Sair</a>`;
+          ul.appendChild(li);
+
+          document.getElementById("btn-logout").addEventListener("click", function(e) {
+            e.preventDefault();
+            DB.logout();
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>

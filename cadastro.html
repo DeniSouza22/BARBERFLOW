@@ -3,357 +3,202 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agendar Horário — BarberFlow</title>
+  <title>Cadastro e Agendamento — BarberFlow</title>
+  <link rel="stylesheet" href="CSS/global.css">
+  <style>
+    .form-container { max-width: 600px; margin: 0 auto; }
+    .form-grupo { margin-bottom: 1.2rem; }
+  </style>
 </head>
 <body>
 
   <header>
     <h1>✂ BarberFlow</h1>
-
     <nav>
       <ul>
-        <li><a href="index.html"> Início</a></li>
-        <li><a href="servicos.html"> Serviços</a></li>
-        <li><a href="barbeiros.html"> Barbeiros</a></li>
-        <li><a href="cadastro.html"><strong> Agendar Agora</strong></a></li>
+        <li><a href="index.html">🏠 Início</a></li>
+        <li><a href="cadastro.html" class="ativo" id="nav-titulo">📝 Cadastro</a></li>
+        <li><a href="login.html" id="nav-link-auth">🚪 Entrar</a></li>
       </ul>
     </nav>
   </header>
 
-  <hr>
+  <main class="form-container">
+    <div id="msg-cadastro" class="alerta" style="display:none"></div>
 
-  <main>
-    <h2> Agendar Horário</h2>
-    <p>Preencha o formulário abaixo para reservar seu horário na Barbearia.</p>
-    <p>Todos os campos marcados com <strong>*</strong> são obrigatórios.</p>
+    <section id="secao-registro-cliente">
+      <h2>📝 Cadastro de Cliente</h2>
+      <p>Crie sua conta em segundos para gerenciar seus agendamentos premium.</p>
+      
+      <form id="form-registro-cliente">
+        <fieldset>
+          <legend>Informações de Acesso</legend>
+          <div class="form-grupo">
+            <label for="c-nome">Nome Completo *</label>
+            <input type="text" id="c-nome" required placeholder="Ex: João da Silva">
+          </div>
+          <div class="form-grupo">
+            <label for="c-email">E-mail *</label>
+            <input type="email" id="c-email" required placeholder="joao@email.com">
+          </div>
+          <div class="form-grupo">
+            <label for="c-senha">Senha (Mínimo 6 caracteres) *</label>
+            <input type="password" id="c-senha" required minlength="6" placeholder="******">
+          </div>
+        </fieldset>
 
-    <ol>
-      <li>Seus dados— informações pessoais</li>
-      <li>Escolha do serviço e barbeiro</li>
-      <li>Data e horário</li>
-      <li>Confirmação</li>
-    </ol>
+        <fieldset>
+          <legend>Dados de Contato e Identificação</legend>
+          <div class="form-grupo">
+            <label for="c-telefone">Telefone / WhatsApp</label>
+            <input type="tel" id="c-telefone" placeholder="(81) 9 9999-0000">
+          </div>
+          <div class="form-grupo">
+            <label for="c-cpf">CPF</label>
+            <input type="text" id="c-cpf" placeholder="000.000.000-00" maxlength="14">
+          </div>
+          <div class="form-grupo">
+            <label for="c-nascimento">Data de Nascimento</label>
+            <input type="date" id="c-nascimento">
+          </div>
+        </fieldset>
 
-    <hr>
+        <button type="submit" class="btn">Finalizar Cadastro</button>
+      </form>
+    </section>
 
-    <form action="lista.html" method="get">
+    <section id="secao-novo-agendamento" style="display:none;">
+      <h2>📅 Novo Agendamento</h2>
+      <p>Escolha o serviço e o horário ideal.</p>
 
-      <fieldset>
-        <legend><strong>1. Dados Pessoais</strong></legend>
+      <form id="form-novo-agendamento">
+        <fieldset>
+          <legend>Detalhes do Atendimento</legend>
+          <div class="form-grupo">
+            <label for="a-servico">Serviço *</label>
+            <select id="a-servico" required>
+              <option value="">Selecione um serviço...</option>
+              <option value="Corte Social">Corte Social — R$ 40,00</option>
+              <option value="Corte + Barba">Corte + Barba — R$ 70,00</option>
+              <option value="Barba Premium">Barba Terapia — R$ 35,00</option>
+            </select>
+          </div>
 
-        <p>
-          <label for="nome">Nome completo *</label><br>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            placeholder="Ex.: João da Silva"
-            required
-            maxlength="100"
-            size="40"
-          >
-        </p>
+          <div class="form-grupo">
+            <label for="a-barbeiro">Barbeiro *</label>
+            <select id="a-barbeiro" required>
+              <option value="">Selecione o profissional...</option>
+              <option value="Marco Barbeiro">Marco Barbeiro</option>
+              <option value="Lucas Oliveira">Lucas Oliveira</option>
+            </select>
+          </div>
 
-        <p>
-          <label for="email">E-mail *</label><br>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Ex.: joao@email.com"
-            required
-            size="40"
-          >
-        </p>
+          <div class="form-grupo">
+            <label for="a-data">Data desejada *</label>
+            <input type="date" id="a-data" required min="2026-06-09">
+          </div>
 
-        <p>
-          <label for="telefone">Telefone / WhatsApp *</label><br>
-          <input
-            type="tel"
-            id="telefone"
-            name="telefone"
-            placeholder="(81) 9 9999-9999"
-            required
-            size="20"
-          >
-          <br>
-          <small>Formato: (DDD) 9 9999-9999</small>
-        </p>
+          <div class="form-grupo">
+            <label for="a-horario">Horário *</label>
+            <select id="a-horario" required>
+              <option value="">Selecione o horário...</option>
+              <option value="09:00">09:00</option>
+              <option value="10:00">10:00</option>
+              <option value="14:00">14:00</option>
+              <option value="16:00">16:00</option>
+              <option value="18:00">18:00</option>
+            </select>
+          </div>
 
-        <p>
-          <label for="cpf">CPF</label><br>
-          <input
-            type="text"
-            id="cpf"
-            name="cpf"
-            placeholder="000.000.000-00"
-            maxlength="14"
-            size="20"
-          >
-        </p>
+          <div class="form-grupo">
+            <label for="a-pagamento">Forma de Pagamento *</label>
+            <select id="a-pagamento" required>
+              <option value="pix">PIX</option>
+              <option value="dinheiro">Dinheiro</option>
+              <option value="credito">Cartão de Crédito</option>
+            </select>
+          </div>
 
-        <p>
-          <label for="nascimento">Data de nascimento</label><br>
-          <input
-            type="date"
-            id="nascimento"
-            name="nascimento"
-            min="1920-01-01"
-            max="2015-12-31"
-          >
-        </p>
+          <div class="form-grupo">
+            <label for="a-obs">Observações Especiais</label>
+            <textarea id="a-obs" placeholder="Alguma restrição ou preferência para este dia?" rows="3"></textarea>
+          </div>
+        </fieldset>
 
-        <p>
-          <label for="como_conheceu">Como nos conheceu?</label><br>
-          <select id="como_conheceu" name="como_conheceu">
-            <option value="">— Selecione —</option>
-            <option value="google">Pesquisa no Google</option>
-            <option value="instagram">Instagram</option>
-            <option value="facebook">Facebook</option>
-            <option value="indicacao">Indicação de amigo</option>
-            <option value="passando">Passei na frente</option>
-            <option value="outro">Outro</option>
-          </select>
-        </p>
-
-      </fieldset>
-
-      <br>
-
-      <fieldset>
-        <legend><strong>2. Escolha do Serviço</strong></legend>
-
-        <p>
-          <label for="servico">Serviço desejado *</label><br>
-          <select id="servico" name="servico" required>
-            <option value="">— Selecione um serviço —</option>
-            <optgroup label="Corte">
-              <option value="corte_social">✂ Corte Social — R$ 35,00 (30 min)</option>
-              <option value="corte_degradê">✂ Corte Degradê — R$ 45,00 (40 min)</option>
-              <option value="corte_infantil">✂ Corte Infantil — R$ 25,00 (25 min)</option>
-            </optgroup>
-            <optgroup label="Barba">
-              <option value="barba_completa"> Barba Completa — R$ 45,00 (45 min)</option>
-              <option value="barba_simples"> Acabamento de Barba — R$ 25,00 (20 min)</option>
-            </optgroup>
-            <optgroup label="Combos">
-              <option value="combo_basico"> Corte + Barba — R$ 70,00 (60 min)</option>
-              <option value="combo_premium"> Combo Premium — R$ 95,00 (75 min)</option>
-            </optgroup>
-            <optgroup label="Tratamentos">
-              <option value="relaxamento"> Relaxamento Capilar — R$ 80,00 (50 min)</option>
-              <option value="progressiva"> Progressiva — R$ 120,00 (90 min)</option>
-            </optgroup>
-          </select>
-        </p>
-
-        <p>
-          <label for="barbeiro">Barbeiro de preferência *</label><br>
-          <select id="barbeiro" name="barbeiro" required>
-            <option value="">— Selecione um barbeiro —</option>
-            <option value="marco">Marco Barbeiro — ⭐ 4.9</option>
-            <option value="lucas">Lucas Oliveira — ⭐ 4.8</option>
-            <option value="rafael">Rafael Santos — ⭐ 4.7</option>
-            <option value="andre">André Costa — ⭐ 4.9</option>
-            <option value="qualquer">Sem preferência (primeiro disponível)</option>
-          </select>
-        </p>
-
-        <p>
-          <label>Serviços adicionais (opcional)</label><br>
-          <label>
-            <input type="checkbox" name="adicional" value="hidratacao">
-             Hidratação Capilar (+R$ 20,00)
-          </label><br>
-          <label>
-            <input type="checkbox" name="adicional" value="sobrancelha">
-             Alinhamento de Sobrancelha (+R$ 15,00)
-          </label><br>
-          <label>
-            <input type="checkbox" name="adicional" value="massagem">
-             Massagem Relaxante (+R$ 30,00)
-          </label><br>
-          <label>
-            <input type="checkbox" name="adicional" value="coloracao">
-             Coloração (+R$ 50,00)
-          </label>
-        </p>
-
-      </fieldset>
-
-      <br>
-
-      <fieldset>
-        <legend><strong>3. Data e Horário</strong></legend>
-
-        <p>
-          <label for="data">Data do agendamento *</label><br>
-          <input
-            type="date"
-            id="data"
-            name="data"
-            required
-            min="2026-03-16"
-          >
-          <br>
-          <small>Atendemos de segunda a sábado. Domingos não há atendimento.</small>
-        </p>
-
-        <p>
-          <label for="horario">Horário desejado *</label><br>
-          <select id="horario" name="horario" required>
-            <option value="">— Selecione um horário —</option>
-            <optgroup label="Manhã">
-              <option value="09:00">09h00</option>
-              <option value="09:30">09h30</option>
-              <option value="10:00">10h00</option>
-              <option value="10:30">10h30</option>
-              <option value="11:00">11h00</option>
-              <option value="11:30">11h30</option>
-            </optgroup>
-            <optgroup label="Tarde">
-              <option value="13:00">13h00</option>
-              <option value="13:30">13h30</option>
-              <option value="14:00">14h00</option>
-              <option value="14:30">14h30</option>
-              <option value="15:00">15h00</option>
-              <option value="15:30">15h30</option>
-              <option value="16:00">16h00</option>
-              <option value="16:30">16h30</option>
-              <option value="17:00">17h00</option>
-              <option value="17:30">17h30</option>
-            </optgroup>
-            <optgroup label="Noite (Sex/Sáb)">
-              <option value="18:00">18h00</option>
-              <option value="18:30">18h30</option>
-              <option value="19:00">19h00</option>
-            </optgroup>
-          </select>
-        </p>
-
-        <p>
-          <label for="horario_alternativo">Horário alternativo (caso o preferido não esteja disponível)</label><br>
-          <select id="horario_alternativo" name="horario_alternativo">
-            <option value="">— Sem alternativa —</option>
-            <option value="09:00">09h00</option>
-            <option value="10:00">10h00</option>
-            <option value="11:00">11h00</option>
-            <option value="14:00">14h00</option>
-            <option value="15:00">15h00</option>
-            <option value="16:00">16h00</option>
-            <option value="17:00">17h00</option>
-          </select>
-        </p>
-
-      </fieldset>
-
-      <br>
-
-      <fieldset>
-        <legend><strong>4. Forma de Pagamento</strong></legend>
-
-        <p>
-          <label>Como pretende pagar?</label><br>
-          <label>
-            <input type="radio" name="pagamento" value="dinheiro">
-             Dinheiro
-          </label><br>
-          <label>
-            <input type="radio" name="pagamento" value="pix" checked>
-             PIX
-          </label><br>
-          <label>
-            <input type="radio" name="pagamento" value="credito">
-             Cartão de Crédito
-          </label><br>
-          <label>
-            <input type="radio" name="pagamento" value="debito">
-             Cartão de Débito
-          </label>
-          <br>
-          <small>Aceitamos pagamentos apenas presencialmente para evitar constornos.</small>
-        </p>
-
-        <p>
-          <label for="cupom">Cupom de desconto</label><br>
-          <input
-            type="text"
-            id="cupom"
-            name="cupom"
-            placeholder="Ex.: PRIMEIROCORTE10"
-            maxlength="20"
-            size="25"
-          >
-          <br>
-          <small>Tem um cupom? Insira o código acima para obter desconto.</small>
-        </p>
-
-      </fieldset>
-
-      <br>
-
-      <fieldset>
-        <legend><strong>5. Termos e Confirmação</strong></legend>
-
-        <p>
-          <strong>Política de cancelamento:</strong><br>
-          Cancelamentos devem ser feitos com no mínimo <strong>1 horas de antecedência</strong>.
-          Faltas sem aviso prévio poderão resultar em taxas de cancelamento.
-        </p>
-
-        <p>
-          <label>
-            <input type="checkbox" name="termos" value="aceito" required>
-            * Li e aceito as polílitcas de cancelamento da BarberFlow.
-          </label>
-        </p>
-
-      </fieldset>
-
-      <p>
-        <small>
-          Ao confirmar, você receberá uma mensagem no WhatsApp de confirmação com os detalhes do seu agendamento.<br>
-          Dúvidas? Entre em contato: 
-          <a href="tel:+558199999999">(81) 9 9999-9999</a>.
-        </small>
-
-      <p>
-        <input type="submit" value=" Confirmar Agendamento">
-        &nbsp;&nbsp;
-      </p>
-
-      </p>
-
-    </form>
-
-    <hr>
-
-    <section>
-      <h3>Outras opções:</h3>
-      <ul>
-        <li><a href="servicos.html"> Ver catálogo completo de serviços</a></li>
-        <li><a href="barbeiros.html"> Conhecer os barbeiros antes de agendar</a></li>
-        <li><a href="index.html"> Voltar para a página inicial</a></li>
-      </ul>
+        <button type="submit" class="btn">Confirmar Agendamento</button>
+        <a href="area-cliente.html" class="btn btn-outline" style="margin-left: 1rem;">Voltar</a>
+      </form>
     </section>
   </main>
 
-  <hr>
+  <script src="JS/db.js"></script>
+  <script>
+    const sessao = DB.usuarioLogado();
+    const msg = document.getElementById("msg-cadastro");
 
-  <footer>
-    <p>
-      <strong>BarberFlow</strong>
-      &copy; 2026 Barbearia · Recife, PE · Todos os direitos reservados
-    </p>
-    <nav>
-      <ul>
-        <li><a href="index.html">Início</a></li>
-        <li><a href="servicos.html">Serviços</a></li>
-        <li><a href="barbeiros.html">Barbeiros</a></li>
-        <li><a href="cadastro.html">Agendar</a></li>
-      </ul>
-    </nav>
-  </footer>
+    // Controle de fluxo visual baseado em autenticação
+    if (sessao) {
+      document.getElementById("secao-registro-cliente").style.display = "none";
+      document.getElementById("secao-novo-agendamento").style.display = "block";
+      document.getElementById("nav-titulo").textContent = "📅 Agendar";
+      document.getElementById("nav-titulo").href = "cadastro.html";
+      
+      const authLink = document.getElementById("nav-link-auth");
+      authLink.textContent = "👤 Minha Área";
+      authLink.href = "area-cliente.html";
+    }
 
+    // Ação: Cadastro de Cliente
+    document.getElementById("form-registro-cliente").addEventListener("submit", function(e) {
+      e.preventDefault();
+      msg.style.display = "none";
+
+      const dados = {
+        nome: document.getElementById("c-nome").value.trim(),
+        email: document.getElementById("c-email").value.trim(),
+        senha: document.getElementById("c-senha").value,
+        telefone: document.getElementById("c-telefone").value.trim(),
+        cpf: document.getElementById("c-cpf").value.trim(),
+        nascimento: document.getElementById("c-nascimento").value
+      };
+
+      const res = DB.criarUsuario(dados);
+
+      if (res.ok) {
+        msg.className = "alerta alerta-ok";
+        msg.textContent = "Cadastro realizado com sucesso! Redirecionando para o login...";
+        msg.style.display = "block";
+        setTimeout(() => { window.location.href = "login.html"; }, 2000);
+      } else {
+        msg.className = "alerta alerta-erro";
+        msg.textContent = res.msg;
+        msg.style.display = "block";
+      }
+    });
+
+    // Ação: Criar Novo Agendamento
+    document.getElementById("form-novo-agendamento").addEventListener("submit", function(e) {
+      e.preventDefault();
+      msg.style.display = "none";
+
+      const dadosAgendamento = {
+        usuarioId: sessao.id,
+        servico: document.getElementById("a-servico").value,
+        barbeiro: document.getElementById("a-barbeiro").value,
+        data: document.getElementById("a-data").value,
+        horario: document.getElementById("a-horario").value,
+        pagamento: document.getElementById("a-pagamento").value,
+        observacoes: document.getElementById("a-obs").value.trim()
+      };
+
+      DB.criarAgendamento(dadosAgendamento);
+
+      msg.className = "alerta alerta-ok";
+      msg.textContent = "Agendamento confirmado com sucesso!";
+      msg.style.display = "block";
+
+      setTimeout(() => { window.location.href = "area-cliente.html"; }, 1500);
+    });
+  </script>
 </body>
 </html>
